@@ -1,0 +1,148 @@
+SlabColourChosen <- ""
+ConstSlabColourOptions <- ["grey", "red", "green"]
+SlabColourCustom <- ""
+SlabColourCheck <- False
+SlabColourCustomCheck <- False
+SlabDepthChosen <- 0
+ConstSlabDepthOptions <- ["38", "45"]
+SlabDepthCheck <- False
+ConstSlabShapeOptions <- ["square", "rectangle", "round"]
+SlabShapeChosen <- ""
+SlabSizeChosen <- ""
+SlabShapeCheck <- False
+SlabSizeCheck <- False
+SingleSlabVolume <- 0
+TotalSlabVolume <- 0
+GreySlabPrice <- 0
+FinalSlabPrice <- 0
+RequiredSlabCount <- 0
+RequiredSlabsTotal <- 0
+OUTPUT "Please follow the instructions to make the slab that you require"
+while True:
+    OUTPUT "Please choose a colour from the following:\nGrey\nRed\nGreen\nCustom"
+    SlabColourChosen <- input().lower()
+    IF SlabColourChosen in ConstSlabColourOptions:
+        OUTPUT f"Slab colour set to {SlabColourChosen}"
+        SlabColourCheck <- True
+        break
+    ELSEIF SlabColourChosen = "custom":
+        OUTPUT "Please enter your custom colour"
+        SlabColourCustom <- input().lower()
+        OUTPUT f"Custom slab colour set to {SlabColourCustom}"
+        SlabColourCheck <- True
+        SlabColourCustomCheck <- True
+        break
+    ELSE:
+        OUTPUT "That is not a valid colour"
+    ENDIF
+ENDWHILE
+while True:
+    OUTPUT "Please choose one of the following depths for your slab (All measurements are in millimeters):\n38\n45"
+                                                     ENDFOR
+    SlabDepthChosen <- input()
+    IF SlabDepthChosen in ConstSlabDepthOptions:
+        IF SlabDepthChosen = "38":
+            SlabDepthChosen <- 38
+            OUTPUT f"Slab depth has been set to {SlabDepthChosen}"
+            SlabDepthCheck <- True
+            break
+        ELSEIF SlabDepthChosen = "45":
+            SlabDepthChosen <- 45
+            OUTPUT f"Slab depth has been set to {SlabDepthChosen}"
+            SlabDepthCheck <- True
+            break
+        ENDIF
+    ELSE:
+        OUTPUT "That is not a valid depth"
+    ENDIF
+ENDWHILE
+while True:
+    OUTPUT "Please choose a slab shape from the following options:\nSquare\nRectangle\nRound"
+    SlabShapeChosen <- input().lower()
+    IF SlabShapeChosen in ConstSlabShapeOptions:
+        IF SlabShapeChosen = "square":
+            SlabShapeCheck <- True
+            OUTPUT "Please choose between one of the following sizes (All measurements are in millimeters):\nPress 'A' for 600x600\nPress 'B' for 450x450"
+                                                                                                                      ENDFOR
+            SlabSizeChosen <- input().lower()
+            IF SlabSizeChosen = "a":
+                SlabSizeChosen <- "600x600"
+                OUTPUT "Slab shape set to square\nSlab size set to 600mmx600mm"
+                SlabSizeCheck <- True
+                break
+            ELSEIF SlabSizeChosen = "b":
+                SlabSizeChosen <- "450x450"
+                OUTPUT "Slab shape set to square\nSlab size set to 450mmx450mm"
+                SlabSizeCheck <- True
+                break
+            ELSE:
+                OUTPUT "That is not a valid size"
+            ENDIF
+        ELSEIF SlabShapeChosen = "rectangle":
+            SlabShapeCheck <- True
+            OUTPUT "Please choose between one of the following sizes (All measurements are in millimeters):\nPress 'A' for 600x700\nPress 'B' for 600x450"
+                                                                                                                      ENDFOR
+            SlabSizeChosen <- input().lower()
+            IF SlabSizeChosen = "a":
+                SlabSizeChosen <- "600x700"
+                OUTPUT "Slab shape set to rectangle\nSlab size set to 600mmx700mm"
+                SlabSizeCheck <- True
+                break
+            ELSEIF SlabSizeChosen = "b":
+                SlabSizeChosen <- "600x450"
+                SlabSizeCheck <- True
+                OUTPUT "Slab shape set to rectangle\nSlab size set to 600mmx450mm"
+                break
+            ELSE:
+                OUTPUT "That is not a valid size"
+            ENDIF
+        ELSEIF SlabShapeChosen = "round":
+            SlabShapeCheck <- True
+            OUTPUT "Please choose between one of the following diameters (All measurements are in millimeters):\nPress 'A' for 300\nPress 'B' for 450"
+                                                                                                                          ENDFOR
+            SlabSizeChosen <- input().lower()
+            IF SlabSizeChosen = "a":
+                SlabSizeChosen <- "300"
+                OUTPUT "Slab shape set to round\nSlab diameter set to 300mm"
+                SlabSizeCheck <- True
+                break
+            ELSEIF SlabSizeChosen = "b":
+                SlabSizeChosen <- "450"
+                OUTPUT "Slab shape set to round\nSlab diameter set to 450mm"
+                SlabSizeCheck <- True
+                break
+            ELSE:
+                OUTPUT "That is not a valid size"
+        ENDIF
+            ENDIF
+    ELSE:
+        OUTPUT "That is not a valid shape"
+    ENDIF
+ENDWHILE
+IF SlabSizeChosen = "600x600":
+    SingleSlabVolume <- (600*600)*SlabDepthChosen
+ELSEIF SlabSizeChosen = "450x450":
+    SingleSlabVolume <- (450*450)*SlabDepthChosen
+ELSEIF SlabSizeChosen = "600x700":
+    SingleSlabVolume <- (600*700)*SlabDepthChosen
+ELSEIF SlabSizeChosen = "600x450":
+    SingleSlabVolume <- (600*450)*SlabDepthChosen
+ELSEIF SlabSizeChosen = "300":
+    SingleSlabVolume <- (3.142*(150**2))*SlabDepthChosen
+ELSEIF SlabSizeChosen = "450":
+    SingleSlabVolume <- (3.142*(225**2))*SlabDepthChosen
+ENDIF
+TotalSlabVolume <- SingleSlabVolume*20
+IF SlabColourChosen = "grey":
+    GreySlabPrice <- (TotalSlabVolume/100000)*0.05
+    FinalSlabPrice <- GreySlabPrice
+ELSEIF SlabColourChosen = "red" OR SlabColourChosen = "green":
+    GreySlabPrice <- ((TotalSlabVolume/100000)*0.05)
+    FinalSlabPrice <- ((10/100)*GreySlabPrice) + GreySlabPrice
+ELSEIF SlabColourCustomCheck = True:
+    GreySlabPrice <- ((TotalSlabVolume/100000)*0.05)
+    FinalSlabPrice <- 5 + ((15/100)*GreySlabPrice) + GreySlabPrice
+ENDIF
+IF SlabColourCheck = True AND SlabDepthCheck = True AND SlabShapeCheck = True AND SlabSizeCheck = True:
+    OUTPUT f"The options that you chose are:\nSlab Colour: {SlabColourChosen.capitalize()}\nSlab Depth: {SlabDepthChosen}\nSlab Shape: {SlabShapeChosen.capitalize()}\nSlab Size: {SlabSizeChosen}"
+    OUTPUT f"The price for 20 slabs of your selection is ${FinalSlabPrice}"
